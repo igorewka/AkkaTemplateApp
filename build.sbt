@@ -7,7 +7,7 @@ scalaVersion := "2.12.2"
 organization := "com.is"
 
 libraryDependencies ++= {
-  val akkaVersion = "2.5.2"
+  val akkaVersion = "2.5.3"
   val akkaHttpVersion = "10.0.7"
   val logbackVersion = "1.2.3"
   val scalaTestVersion = "3.0.3"
