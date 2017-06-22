@@ -21,7 +21,7 @@ class BoxOffice extends Actor {
 
           ticketSeller ! TicketSeller.In.Add(tickets)
 
-          sender() ! Out.EventCreated(Event(eventName, ticketCount))
+          sender() ! Out.EventCreated(Out.Event(eventName, ticketCount))
       }
 
     case In.BuyTickets(eventName, ticketCount) =>
@@ -42,15 +42,22 @@ class BoxOffice extends Actor {
       implicit val timeout = Timeout(5.seconds)
       implicit val ec = context.system.dispatcher
 
-      val futuresOfEvent = context.children.map(ticketSeller => (ticketSeller ? TicketSeller.In.Details).mapTo[Event])
+      val futuresOfEvent = context.children.map(ticketSeller => (ticketSeller ? TicketSeller.In.Details).mapTo[Out.Event])
       Future.sequence(futuresOfEvent).map(events => Out.Events(events.toVector)) pipeTo sender()
+
+    case In.CancelEvent(eventName) =>
+      context.child(eventName) match {
+        case Some(ticketSeller) => ticketSeller.forward(TicketSeller.In.Cancel)
+
+        case None => sender() ! Out.EventMissing
+      }
   }
 
 }
 
 object BoxOffice {
 
-  case class Event(name: String, ticketCount: Int)
+  val name = "boxoffice"
 
   object In {
 
@@ -68,13 +75,15 @@ object BoxOffice {
 
   object Out {
 
-    case object EventExists
+    case class Event(name: String, ticketCount: Int) extends RestApi.Response
 
-    case object EventMissing
+    case object EventExists extends RestApi.Response
 
-    case class EventCreated(event: Event)
+    case object EventMissing extends RestApi.Response
 
-    case class Events(events: Vector[Event])
+    case class EventCreated(event: Event) extends RestApi.Response
+
+    case class Events(events: Vector[Event]) extends RestApi.Response
 
   }
 

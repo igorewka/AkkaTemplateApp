@@ -21,10 +21,10 @@ class TicketSeller(eventName: String) extends Actor {
       }
 
     case In.Details =>
-      sender() ! BoxOffice.Event(eventName, tickets.size)
+      sender() ! BoxOffice.Out.Event(eventName, tickets.size)
 
     case In.Cancel =>
-      sender() ! BoxOffice.Event(eventName, tickets.size)
+      sender() ! BoxOffice.Out.Event(eventName, tickets.size)
       self ! PoisonPill
   }
 
@@ -48,7 +48,7 @@ object TicketSeller {
 
   object Out {
 
-    case class Tickets(eventName: String, tickets: Vector[Ticket] = Vector[Ticket]())
+    case class Tickets(eventName: String, tickets: Vector[Ticket] = Vector[Ticket]()) extends RestApi.Response
 
   }
 
