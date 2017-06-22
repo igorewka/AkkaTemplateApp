@@ -26,7 +26,8 @@ class RestApi(system: ActorSystem) {
         post {
           entity(as[EventDescription]) { eventDescr =>
             onSuccess(createEvent(eventName, eventDescr.ticketCount)) {
-              case BoxOffice.Out.EventCreated(event) => complete(Created, EventDescription(event.ticketCount))
+              case BoxOffice.Out.EventCreated(event) =>
+                complete(Created, EventDescription(event.ticketCount))
               case BoxOffice.Out.EventExists =>
                 val err = Error(s"$eventName event exists already")
                 complete(BadRequest, err)
@@ -38,7 +39,8 @@ class RestApi(system: ActorSystem) {
         } ~
           get {
             onSuccess(getEvent(eventName)) {
-              case BoxOffice.Out.Event(_, ticketCount) => complete(OK, EventDescription(ticketCount))
+              case BoxOffice.Out.Event(_, ticketCount) =>
+                complete(OK, EventDescription(ticketCount))
               case BoxOffice.Out.EventMissing =>
                 val err = Error(s"$eventName event missing")
                 complete(BadRequest, err)
@@ -49,7 +51,8 @@ class RestApi(system: ActorSystem) {
           } ~
           get {
             onSuccess(getEvent(eventName)) {
-              case BoxOffice.Out.Event(_, ticketCount) => complete(OK, EventDescription(ticketCount))
+              case BoxOffice.Out.Event(_, ticketCount) =>
+                complete(OK, EventDescription(ticketCount))
               case BoxOffice.Out.EventMissing =>
                 val err = Error(s"$eventName event missing")
                 complete(BadRequest, err)
@@ -60,7 +63,8 @@ class RestApi(system: ActorSystem) {
           } ~
           delete {
             onSuccess(cancelEvent(eventName)) {
-              case BoxOffice.Out.Event(_, ticketCount) => complete(OK, EventDescription(ticketCount))
+              case BoxOffice.Out.Event(_, ticketCount) =>
+                complete(OK, EventDescription(ticketCount))
               case BoxOffice.Out.EventMissing =>
                 val err = Error(s"$eventName event missing")
                 complete(BadRequest, err)
@@ -75,7 +79,8 @@ class RestApi(system: ActorSystem) {
         pathEndOrSingleSlash {
           get {
             onSuccess(getEvents) {
-              case BoxOffice.Out.Events(events) => complete(OK, events)
+              case BoxOffice.Out.Events(events) =>
+                complete(OK, events)
               case unexpected =>
                 val err = Error(s"Unexpected msg: $unexpected")
                 complete(BadRequest, err)
@@ -88,7 +93,8 @@ class RestApi(system: ActorSystem) {
           post {
             entity(as[TicketRequest]) { ticketReq =>
               onSuccess(buyTickets(eventName, ticketReq.ticketCount)) {
-                case TicketSeller.Out.Tickets(_, tickets) => complete(OK, tickets)
+                case TicketSeller.Out.Tickets(_, tickets) =>
+                  complete(OK, tickets)
                 case BoxOffice.Out.EventMissing =>
                   val err = Error(s"$eventName event missing")
                   complete(BadRequest, err)

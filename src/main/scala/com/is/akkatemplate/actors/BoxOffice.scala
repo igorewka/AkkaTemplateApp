@@ -14,7 +14,8 @@ class BoxOffice extends Actor {
 
     case In.CreateEvent(eventName, ticketCount) =>
       context.child(eventName) match {
-        case Some(_) => sender() ! Out.EventExists
+        case Some(_) =>
+          sender() ! Out.EventExists
         case None =>
           val ticketSeller = context.actorOf(Props(classOf[TicketSeller], eventName), eventName)
           val tickets = (1 to ticketCount).map(id => TicketSeller.Ticket(id.toString)).toVector
@@ -26,16 +27,18 @@ class BoxOffice extends Actor {
 
     case In.BuyTickets(eventName, ticketCount) =>
       context.child(eventName) match {
-        case Some(ticketSeller) => ticketSeller.forward(TicketSeller.In.Buy(ticketCount))
-
-        case None => sender() ! Out.EventMissing
+        case Some(ticketSeller) =>
+          ticketSeller.forward(TicketSeller.In.Buy(ticketCount))
+        case None =>
+          sender() ! Out.EventMissing
       }
 
     case In.GetEvent(eventName) =>
       context.child(eventName) match {
-        case Some(ticketSeller) => ticketSeller.forward(TicketSeller.In.Details)
-
-        case None => sender() ! Out.EventMissing
+        case Some(ticketSeller) =>
+          ticketSeller.forward(TicketSeller.In.Details)
+        case None =>
+          sender() ! Out.EventMissing
       }
 
     case In.GetEvents =>
@@ -47,9 +50,10 @@ class BoxOffice extends Actor {
 
     case In.CancelEvent(eventName) =>
       context.child(eventName) match {
-        case Some(ticketSeller) => ticketSeller.forward(TicketSeller.In.Cancel)
-
-        case None => sender() ! Out.EventMissing
+        case Some(ticketSeller) =>
+          ticketSeller.forward(TicketSeller.In.Cancel)
+        case None =>
+          sender() ! Out.EventMissing
       }
   }
 

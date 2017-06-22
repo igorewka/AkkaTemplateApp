@@ -9,7 +9,8 @@ class TicketSeller(eventName: String) extends Actor {
 
   override def receive: Receive = {
 
-    case In.Add(newTickets) => tickets ++ newTickets
+    case In.Add(newTickets) =>
+      tickets = tickets ++ newTickets
 
     case In.Buy(ticketCount) =>
       if (tickets.size >= ticketCount) {
