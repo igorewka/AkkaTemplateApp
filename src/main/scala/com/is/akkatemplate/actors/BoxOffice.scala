@@ -3,6 +3,7 @@ package com.is.akkatemplate.actors
 import akka.actor.{Actor, Props}
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
+import com.is.akkatemplate.RestApi
 import com.is.akkatemplate.actors.BoxOffice._
 
 import scala.concurrent.Future

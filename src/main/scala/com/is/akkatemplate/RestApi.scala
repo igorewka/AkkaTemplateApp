@@ -1,4 +1,4 @@
-package com.is.akkatemplate.actors
+package com.is.akkatemplate
 
 import akka.actor.{ActorSystem, Props}
 import akka.http.scaladsl.model.StatusCodes._
@@ -6,7 +6,8 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{PathMatchers, Route}
 import akka.pattern.ask
 import akka.util.Timeout
-import com.is.akkatemplate.actors.RestApi.{Error, EventDescription, TicketRequest}
+import com.is.akkatemplate.RestApi.{Error, EventDescription, TicketRequest}
+import com.is.akkatemplate.actors.{BoxOffice, TicketSeller}
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 import io.circe.generic.auto._
 

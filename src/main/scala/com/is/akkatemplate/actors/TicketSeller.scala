@@ -1,6 +1,7 @@
 package com.is.akkatemplate.actors
 
 import akka.actor.{Actor, PoisonPill}
+import com.is.akkatemplate.RestApi
 import com.is.akkatemplate.actors.TicketSeller._
 
 class TicketSeller(eventName: String) extends Actor {

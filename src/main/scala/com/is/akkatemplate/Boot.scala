@@ -3,7 +3,6 @@ package com.is.akkatemplate
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
-import com.is.akkatemplate.actors.RestApi
 import com.typesafe.config.ConfigFactory
 
 object Boot extends App {
